@@ -691,6 +691,23 @@ class EmptyPositionsAlgorithm(TradingAlgorithm):
         self.record(num_positions=len(self.portfolio.positions))
 
 
+class TestPositionWeightsAlgorithm(TradingAlgorithm):
+    """
+    An algorithm that records the weights of its portfolio holdings each day.
+    """
+    def initialize(self, sids, *args, **kwargs):
+        self.ordered = False
+        self.sids = sids
+
+    def handle_data(self, data):
+        if not self.ordered:
+            for s in self.sids:
+                self.order(self.sid(s), 1)
+            self.ordered = True
+
+        self.record(position_weights=self.portfolio.current_portfolio_weights)
+
+
 class InvalidOrderAlgorithm(TradingAlgorithm):
     """
     An algorithm that tries to make various invalid order calls, verifying that

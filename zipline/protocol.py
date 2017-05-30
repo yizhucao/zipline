@@ -16,7 +16,7 @@ from warnings import warn
 
 import pandas as pd
 
-from zipline.assets import Asset
+from zipline.assets import Asset, Future
 from zipline.utils.input_validation import expect_types
 from .utils.enum import enum
 from zipline._protocol import BarData  # noqa
@@ -168,6 +168,21 @@ class Portfolio(object):
             'positions_value',
         },
     )
+
+    @property
+    def current_portfolio_weights(self):
+        def asset_multiplier(asset):
+            return asset.multiplier if isinstance(asset, Future) else 1
+
+        return {
+            asset: (
+                position.last_sale_price *
+                position.amount *
+                asset_multiplier(asset) /
+                self.positions_exposure
+            )
+            for asset, position in self.positions.iteritems()
+        }
 
 
 class Account(object):

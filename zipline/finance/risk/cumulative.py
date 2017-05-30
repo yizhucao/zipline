@@ -30,6 +30,7 @@ from . risk import (
 from empyrical import (
     alpha_beta_aligned,
     annual_volatility,
+    conditional_value_at_risk,
     cum_returns,
     downside_risk,
     information_ratio,
@@ -37,6 +38,9 @@ from empyrical import (
     sharpe_ratio,
     sortino_ratio,
 )
+
+CVAR_CUTOFF = 0.05
+CVAR_LOOKBACK_DAYS = 200
 
 log = logbook.Logger('Risk Cumulative')
 
@@ -136,6 +140,7 @@ class RiskMetricsCumulative(object):
         self.max_drawdown = 0
         self.max_leverages = empty_cont.copy()
         self.max_leverage = 0
+        self.cvar = empty_cont.copy()
         self.current_max = -np.inf
         self.daily_treasury = pd.Series(index=self.sessions)
         self.treasury_period_return = np.nan
@@ -281,6 +286,12 @@ algorithm_returns ({algo_count}) in range {start} : {end} on {dt}"
         self.max_leverage = self.calculate_max_leverage()
         self.max_leverages[dt_loc] = self.max_leverage
 
+        self.cvar[dt_loc] = conditional_value_at_risk(
+            returns=pd.DataFrame(self.algorithm_returns[-CVAR_LOOKBACK_DAYS:]),
+            weights=[1],
+            cutoff=CVAR_CUTOFF,
+        )
+
     def to_dict(self):
         """
         Creates a dictionary representing the state of the risk report.
@@ -312,6 +323,7 @@ algorithm_returns ({algo_count}) in range {start} : {end} on {dt}"
             'excess_return': self.excess_returns[dt_loc],
             'max_drawdown': self.max_drawdown,
             'max_leverage': self.max_leverage,
+            'cvar_of_returns': self.cvar[dt_loc],
             'period_label': period_label
         }
 
