@@ -287,8 +287,7 @@ algorithm_returns ({algo_count}) in range {start} : {end} on {dt}"
         self.max_leverages[dt_loc] = self.max_leverage
 
         self.cvar[dt_loc] = conditional_value_at_risk(
-            returns=pd.DataFrame(self.algorithm_returns[-CVAR_LOOKBACK_DAYS:]),
-            weights=[1],
+            returns=self.algorithm_returns[-CVAR_LOOKBACK_DAYS:],
             cutoff=CVAR_CUTOFF,
         )
 

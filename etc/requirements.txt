@@ -74,6 +74,6 @@ intervaltree==2.1.0
 lru-dict==1.1.4
 
 # For financial risk calculations
-empyrical==0.2.2
+https://github.com/quantopian/alphalens/zipball/38196f7d0669a9954fffee1298741d2765e889e6
 
 tables==3.3.0
