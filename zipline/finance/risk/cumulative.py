@@ -40,7 +40,7 @@ from empyrical import (
 )
 
 CVAR_CUTOFF = 0.05
-CVAR_LOOKBACK_DAYS = 200
+CVAR_LOOKBACK_DAYS = 500
 
 log = logbook.Logger('Risk Cumulative')
 
@@ -286,7 +286,7 @@ algorithm_returns ({algo_count}) in range {start} : {end} on {dt}"
         self.max_leverage = self.calculate_max_leverage()
         self.max_leverages[dt_loc] = self.max_leverage
 
-        self.cvar[dt_loc] = conditional_value_at_risk(
+        self.realized_cvar[dt_loc] = conditional_value_at_risk(
             returns=self.algorithm_returns[-CVAR_LOOKBACK_DAYS:],
             cutoff=CVAR_CUTOFF,
         )
@@ -322,7 +322,7 @@ algorithm_returns ({algo_count}) in range {start} : {end} on {dt}"
             'excess_return': self.excess_returns[dt_loc],
             'max_drawdown': self.max_drawdown,
             'max_leverage': self.max_leverage,
-            'cvar_of_returns': self.cvar[dt_loc],
+            'realized_cvar': self.realized_cvar[dt_loc],
             'period_label': period_label
         }
 

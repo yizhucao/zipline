@@ -58,7 +58,7 @@ install:
   - pip install -r etc/requirements_blaze.txt --cache-dir=$CACHE_DIR  # this uses git requirements right now
   - pip install -r etc/requirements_talib.txt --cache-dir=$CACHE_DIR
   - pip install -e .[all] --cache-dir=$CACHE_DIR
-  - pip install https://github.com/quantopian/empyrical/zipball/38196f7d0669a9954fffee1298741d2765e889e6
+  - pip install git+git://github.com/quantopian/empyrical.git@45938e36805e4252ee9943a563ebe20cc4b97ae6
 before_script:
   - pip freeze | sort
 script:
