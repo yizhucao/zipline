@@ -43,11 +43,9 @@ Finally, you can build the C extensions by running:
 
    $ python setup.py build_ext --inplace
 
-To finish, make sure tests pass by running
+To finish, make sure `tests`__ pass.
 
-.. code-block:: bash
-
-   $ nosetests
+__ http://zipline.io/development-guidelines.html#style-guide-running-tests
 
 If you get an error running nosetests after setting up a fresh virtualenv, please try running
 
@@ -201,7 +199,7 @@ e.g.
 Formatting Docstrings
 ---------------------
 
-When adding or editing docstrings for classes, functions, etc, we use the `numpy`__ as the canonical reference.
+When adding or editing docstrings for classes, functions, etc, we use `numpy`__ as the canonical reference.
 
 __ https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt
 
